@@ -310,56 +310,56 @@
 
         // Function to send message
         const API_URL = "https://portfolio-wahyu-website.onrender.com/chatbot";
-async function sendMessage() {
-  const message = chatInput.value.trim();
-  if (!message) return;
+        async function sendMessage() {
+          const message = chatInput.value.trim();
+          if (!message) return;
 
-  // Add user message to chat
-  chatMessages.innerHTML += `
-    <div class="text-right mb-2">
-      <div class="inline-block bg-gradient-to-r from-gradient3 to-gradient4 text-white p-2 rounded-lg">
-        ${message}
-      </div>
-    </div>
-  `;
-  chatInput.value = "";
+          // Add user message to chat
+          chatMessages.innerHTML += `
+            <div class="text-right mb-2">
+              <div class="inline-block bg-gradient-to-r from-gradient3 to-gradient4 text-white p-2 rounded-lg">
+                ${message}
+              </div>
+            </div>
+          `;
+          chatInput.value = "";
 
-  // Send message to backend
-  try {
-    const response = await fetch(API_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: message }),
-    });
+          // Send message to backend
+          try {
+            const response = await fetch(API_URL, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ message: message }),
+            });
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
 
-    const data = await response.json();
+            const data = await response.json();
 
-    // Add bot response to chat
-    chatMessages.innerHTML += `
-      <div class="text-left mb-2">
-        <div class="inline-block bg-gray-200 text-gray-900 p-2 rounded-lg">
-          ${data.response}
-        </div>
-      </div>
-    `;
+            // Add bot response to chat
+            chatMessages.innerHTML += `
+              <div class="text-left mb-2">
+                <div class="inline-block bg-gray-200 text-gray-900 p-2 rounded-lg">
+                  ${data.response}
+                </div>
+              </div>
+            `;
 
-    // Scroll to bottom
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-  } catch (error) {
-    console.error("Error:", error);
-    chatMessages.innerHTML += `
-      <div class="text-left mb-2">
-        <div class="inline-block bg-red-100 text-red-900 p-2 rounded-lg">
-          Error: Could not connect to the server. Please try again later.
-        </div>
-      </div>
-    `;
-  }
-}
+            // Scroll to bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+          } catch (error) {
+            console.error("Error:", error);
+            chatMessages.innerHTML += `
+              <div class="text-left mb-2">
+                <div class="inline-block bg-red-100 text-red-900 p-2 rounded-lg">
+                  Error: Could not connect to the server. Please try again later.
+                </div>
+              </div>
+            `;
+          }
+        }
       });
     </script>
 
