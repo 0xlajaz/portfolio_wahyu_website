@@ -7,8 +7,8 @@ import logging
 
 app = Flask(__name__)
 
-# Konfigurasi CORS untuk mengizinkan akses dari GitHub Pages
-CORS(app, resources={r"/chatbot": {"origins": ["https://wahyu-02.github.io"]}})
+# Konfigurasi CORS agar mengizinkan semua metode dan header
+CORS(app, resources={r"/chatbot": {"origins": "*"}})
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
@@ -61,7 +61,7 @@ I am also active in various social and teaching activities. I have been an Algor
 # Handling CORS secara manual jika masih terjadi error
 @app.after_request
 def add_cors_headers(response):
-    response.headers["Access-Control-Allow-Origin"] = "https://wahyu-02.github.io"
+    response.headers["Access-Control-Allow-Origin"] = "*"
     response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
     response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
     return response
@@ -72,8 +72,12 @@ def home():
     return "Chatbot API is Running!"
 
 # Endpoint untuk chatbot
-@app.route("/chatbot", methods=["POST"])
+@app.route("/chatbot", methods=["POST", "OPTIONS"])
 def chatbot():
+    # Handle preflight OPTIONS request (agar CORS tidak memblokir POST request)
+    if request.method == "OPTIONS":
+        return jsonify({"message": "CORS preflight passed"}), 200
+
     try:
         data = request.get_json()
         user_message = data.get("message")
@@ -83,7 +87,7 @@ def chatbot():
 
         logger.info(f"User asked: {user_message}")
 
-        # Menggunakan AI untuk menjawab pertanyaan berdasarkan informasi pribadi
+        # Gunakan AI untuk menjawab pertanyaan
         ai_response = ask_gemini(user_message)
         return jsonify({"response": ai_response})
 
@@ -98,15 +102,14 @@ def detect_language(text):
         return "en" if lang == "en" else "id"
     except Exception as e:
         logger.error(f"Error detecting language: {e}")
-        return "id"  # Default ke bahasa Indonesia jika tidak bisa dideteksi
+        return "id"
 
 # Fungsi untuk memproses pertanyaan dengan Gemini AI
 def ask_gemini(question):
     try:
         lang = detect_language(question)
         prompt = f"""
-        You are Wade, Wahyu's personal chatbot. Your answers should be based on the information provided.
-        If the question is unrelated, provide a neutral response.
+        You are Wade, Wahyu's personal chatbot. Your answers should be based on general knowledge.
 
         **User question:** {question}
         """
@@ -124,4 +127,4 @@ def ask_gemini(question):
 
 # Konfigurasi Gunicorn untuk Render
 if __name__ != "__main__":
-    gunicorn_app = app  # Gunicorn membutuhkan variabel ini
+    gunicorn_app = app
