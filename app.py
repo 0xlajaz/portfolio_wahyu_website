@@ -6,7 +6,7 @@ import os
 import logging
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/chatbot": {"origins": ["https://wahyu-02.github.io/portfolio_wahyu_website"]}})
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
@@ -116,4 +116,4 @@ def chatbot():
         return jsonify({"error": "Terjadi kesalahan pada server."}), 500
 
 if __name__ != "__main__":
-    gunicorn_app = app  # Gunicorn membutuhkan variabel ini
+    gunicorn_app = app  
