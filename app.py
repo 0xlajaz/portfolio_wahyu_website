@@ -6,7 +6,7 @@ import os
 import logging
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/chatbot": {"origins": "https://wahyu-02.github.io/portfolio_wahyu_website"}})
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
