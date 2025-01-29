@@ -6,7 +6,9 @@ import os
 import logging
 
 app = Flask(__name__)
-CORS(app, resources={r"/chatbot": {"origins": ["https://wahyu-02.github.io/portfolio_wahyu_website"]}})
+
+# Konfigurasi CORS untuk mengizinkan akses dari GitHub Pages
+CORS(app, resources={r"/chatbot": {"origins": ["https://wahyu-02.github.io"]}})
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
@@ -56,8 +58,41 @@ In addition to the world of data, I have a great interest in the creative world.
 I am also active in various social and teaching activities. I have been an Algorithm and Programming Lab Assistant and a Data Structure Lab Assistant, where I helped other students understand the basic concepts of programming and data structures. My main challenge in this role is to really master the material before the practicum is carried out. I am also involved as a Volunteer in ITERA Mengajar, a social program that aims to improve access to education for people in need. This experience is one of the most exciting and touching experiences for me, where for three months every weekend, I met, played, and learned with children from various backgrounds. I feel that this experience not only taught me how to be a good educator, but also how to understand the needs and challenges faced by those who are less fortunate in getting an education.
 """
 
+# Handling CORS secara manual jika masih terjadi error
+@app.after_request
+def add_cors_headers(response):
+    response.headers["Access-Control-Allow-Origin"] = "https://wahyu-02.github.io"
+    response.headers["Access-Control-Allow-Methods"] = "GET, POST, OPTIONS"
+    response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
+    return response
+
+# Endpoint utama untuk mengecek API berjalan
+@app.route("/")
+def home():
+    return "Chatbot API is Running!"
+
+# Endpoint untuk chatbot
+@app.route("/chatbot", methods=["POST"])
+def chatbot():
+    try:
+        data = request.get_json()
+        user_message = data.get("message")
+
+        if not user_message:
+            return jsonify({"error": "No message provided"}), 400
+
+        logger.info(f"User asked: {user_message}")
+
+        # Menggunakan AI untuk menjawab pertanyaan berdasarkan informasi pribadi
+        ai_response = ask_gemini(user_message)
+        return jsonify({"response": ai_response})
+
+    except Exception as e:
+        logger.error(f"Error in server: {e}")
+        return jsonify({"error": "Terjadi kesalahan pada server."}), 500
+
+# Fungsi untuk mendeteksi bahasa
 def detect_language(text):
-    """ Mendeteksi apakah teks dalam bahasa Inggris atau Indonesia """
     try:
         lang = detect(text)
         return "en" if lang == "en" else "id"
@@ -65,20 +100,15 @@ def detect_language(text):
         logger.error(f"Error detecting language: {e}")
         return "id"  # Default ke bahasa Indonesia jika tidak bisa dideteksi
 
+# Fungsi untuk memproses pertanyaan dengan Gemini AI
 def ask_gemini(question):
-    """ Menggunakan Gemini AI untuk menjawab pertanyaan berdasarkan informasi pribadi Wahyu. """
     try:
         lang = detect_language(question)
-        info = PERSONAL_INFO_EN if lang == "en" else PERSONAL_INFO_ID
-
         prompt = f"""
-        You are Wade, Wahyu's personal chatbot. Your answers should be based on the following information:
+        You are Wade, Wahyu's personal chatbot. Your answers should be based on the information provided.
+        If the question is unrelated, provide a neutral response.
 
-        {info}
-
-        If the question is not related to the information above, provide a neutral answer or help the user with general information. Your answer should be accurate, professional, and easy to understand.
-
-        **User questions:** {question}
+        **User question:** {question}
         """
 
         response = model.generate_content(prompt)
@@ -92,28 +122,6 @@ def ask_gemini(question):
         logger.error(f"Error in Gemini API: {e}")
         return "Maaf, saya mengalami kendala teknis dalam menjawab pertanyaan ini." if lang == "id" else "Sorry, I am experiencing a technical issue in answering this question."
 
-@app.route("/")
-def home():
-    return "Chatbot API is Running!"
-
-@app.route("/chatbot", methods=["POST"])
-def chatbot():
-    try:
-        data = request.get_json()
-        user_message = data.get("message")
-
-        if not user_message:
-            return jsonify({"error": "No message provided"}), 400
-
-        logger.info(f"User asked: {user_message}")
-
-        # Gunakan AI untuk menjawab pertanyaan berdasarkan informasi pribadi
-        ai_response = ask_gemini(user_message)
-        return jsonify({"response": ai_response})
-
-    except Exception as e:
-        logger.error(f"Error in server: {e}")
-        return jsonify({"error": "Terjadi kesalahan pada server."}), 500
-
+# Konfigurasi Gunicorn untuk Render
 if __name__ != "__main__":
-    gunicorn_app = app  
+    gunicorn_app = app  # Gunicorn membutuhkan variabel ini
