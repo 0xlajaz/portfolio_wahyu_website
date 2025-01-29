@@ -108,8 +108,14 @@ def detect_language(text):
 def ask_gemini(question):
     try:
         lang = detect_language(question)
+        info = PERSONAL_INFO_EN if lang == "en" else PERSONAL_INFO_ID
+
         prompt = f"""
-        You are Wade, Wahyu's personal chatbot. Your answers should be based on general knowledge.
+        You are Wade, Wahyu's personal chatbot. Your answers should be based on the following information:
+
+        {info}
+
+        If the question is not related to the information above, provide a neutral answer or help the user with general information. Your answer should be accurate, professional, and easy to understand.
 
         **User question:** {question}
         """
