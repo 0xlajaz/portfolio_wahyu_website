@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resume</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#f3ece6",
+              secondary: "#cbdbe7",
+              accent: "#f8a1a6",
+              gradient1: "#f8e8dc",
+              gradient2: "#bdd4e7",
+              gradient3: "#fbc2eb",
+              gradient4: "#a6c0fe",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      /* Background Gradient */
+      .gradient-bg {
+        background: linear-gradient(
+          135deg,
+          rgba(248, 232, 220, 1) 0%,
+          rgba(189, 212, 231, 1) 40%,
+          rgba(251, 194, 235, 1) 70%,
+          rgba(166, 192, 254, 1) 100%
+        );
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+      }
+
+      /* Noise Overlay */
+      .noise-overlay {
+        background: url("https://www.transparenttextures.com/patterns/asfalt-light.png");
+        opacity: 0.15;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+      }
+
+      /* Smooth hover animation */
+      .hover-card {
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+      }
+      .hover-card:hover {
+        transform: scale(1.03);
+        box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.15);
+      }
+    </style>
+  </head>
+  <body class="relative text-gray-900 min-h-screen">
+    <!-- Background -->
+    <div class="absolute inset-0 gradient-bg"></div>
+    <div class="absolute inset-0 noise-overlay"></div>
+
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+
+    <!-- Header -->
+    <header
+      x-data="{ open: false, lastScroll: 0, visible: true }"
+      x-init="
+        window.addEventListener('scroll', () => {
+          let currentScroll = window.pageYOffset;
+          visible = (currentScroll < lastScroll) || (currentScroll < 50);
+          lastScroll = currentScroll;
+        });
+      "
+      x-bind:class="visible ? 'translate-y-0 opacity-100' : '-translate-y-20 opacity-0'"
+      class="w-full py-4 bg-gradient-to-r from-gradient1 via-gradient2 to-gradient3 bg-opacity-80 backdrop-blur-lg shadow-lg fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out"
+    >
+      <nav class="container mx-auto flex justify-between items-center px-6">
+        <!-- Logo -->
+        <h1 class="text-xl font-bold text-shadow">My Career Path</h1>
+
+        <!-- Desktop Menu -->
+        <ul class="hidden md:flex gap-6 text-gray-900 font-semibold">
+          <li>
+            <a href="index.html" class="hover:text-gray-600 transition">Home</a>
+          </li>
+          <li>
+            <a href="portfolio.html" class="hover:text-gray-600 transition"
+              >Portfolio</a
+            >
+          </li>
+          <li>
+            <a href="activity.html" class="hover:text-gray-600 transition"
+              >Activity</a
+            >
+          </li>
+          <li>
+            <a href="contact.html" class="hover:text-gray-600 transition"
+              >Contact</a
+            >
+          </li>
+        </ul>
+
+        <!-- Mobile Menu Button -->
+        <button
+          @click="open = !open"
+          class="md:hidden text-gray-900 focus:outline-none z-50 relative"
+        >
+          <svg
+            x-show="!open"
+            class="w-8 h-8"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16m-7 6h7"
+            ></path>
+          </svg>
+        </button>
+      </nav>
+
+      <!-- Mobile Menu (Dynamic Island Effect) -->
+      <div
+        x-show="open"
+        @click.away="open = false"
+        class="fixed top-3 left-1/2 transform -translate-x-1/2 w-[90%] max-w-lg bg-gradient-to-r from-gradient1 via-gradient2 to-gradient3 shadow-lg rounded-full z-50 transition-all duration-300 ease-in-out"
+        x-transition:enter="transform transition ease-out duration-300"
+        x-transition:enter-start="scale-50 opacity-0"
+        x-transition:enter-end="scale-100 opacity-100"
+        x-transition:leave="transform transition ease-in duration-300"
+        x-transition:leave-start="scale-100 opacity-100"
+        x-transition:leave-end="scale-50 opacity-0"
+      >
+        <nav class="px-3 py-2">
+          <ul
+            class="flex flex-row justify-center gap-6 text-gray-900 text-lg font-semibold"
+          >
+            <li>
+              <a
+                href="index.html"
+                @click="open = false"
+                class="hover:text-gray-600 transition"
+                >Home</a
+              >
+            </li>
+            <li>
+              <a
+                href="portfolio.html"
+                @click="open = false"
+                class="hover:text-gray-600 transition"
+                >Portfolio</a
+              >
+            </li>
+            <li>
+              <a
+                href="activity.html"
+                @click="open = false"
+                class="hover:text-gray-600 transition"
+                >Activity</a
+              >
+            </li>
+            <li>
+              <a
+                href="contact.html"
+                @click="open = false"
+                class="hover:text-gray-600 transition"
+                >Contact</a
+              >
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Resume Section -->
+    <section id="resume" class="py-20 container mx-auto px-6 md:px-12">
+      <h2 class="text-4xl font-bold text-center text-gray-900 mb-10">Resume</h2>
+
+      <!-- Education -->
+      <div class="bg-white p-6 rounded-xl shadow-md hover-card mb-6">
+        <h3 class="text-2xl font-semibold mb-4 text-gray-900">🎓 Education</h3>
+        <p class="text-gray-700 font-medium">
+          <strong>Institut Teknologi Sumatera</strong>, Bandar Lampung,
+          Indonesia
+        </p>
+        <p class="text-gray-600">
+          7th Semester Bachelor's Degree in Data Science (August 2021 – Present)
+        </p>
+      </div>
+
+      <!-- Experience -->
+      <div class="bg-white p-6 rounded-xl shadow-md hover-card mb-6">
+        <h3 class="text-2xl font-semibold mb-4 text-gray-900">💼 Experience</h3>
+        <ul class="list-disc pl-5 text-gray-700">
+          <li>
+            <strong>Head of Creative Media Department</strong> - Data Science
+            Student Association (Feb 2024 – Present)
+          </li>
+          <li>
+            <strong>Volunteer</strong> - ITERA Mengajar (Aug 2023 – Present)
+          </li>
+          <li>
+            <strong>Algorithm and Programming Lab Assistant</strong> - Data
+            Science Program (Sep 2023 – Dec 2023)
+          </li>
+          <li>
+            <strong>Data Structure Lab Assistant</strong> - Data Science Program
+            (Sep 2023 – Dec 2023)
+          </li>
+        </ul>
+      </div>
+
+      <!-- Achievements -->
+      <div class="bg-white p-6 rounded-xl shadow-md hover-card mb-6">
+        <h3 class="text-2xl font-semibold mb-4 text-gray-900">
+          🏆 Achievements & Scholarships
+        </h3>
+        <ul class="list-disc pl-5 text-gray-700">
+          <li>
+            <strong>2nd Place</strong> - National Halo China Video Competition
+            (Nov 14, 2023)
+          </li>
+          <li>
+            <strong>BriLian Scholarship Awardee</strong> - BRI (2021 – 2022)
+          </li>
+        </ul>
+      </div>
+
+      <!-- Skills -->
+      <div class="bg-white p-6 rounded-xl shadow-md hover-card mb-6">
+        <h3 class="text-2xl font-semibold mb-4 text-gray-900">🛠️ Skills</h3>
+        <ul class="list-disc pl-5 text-gray-700">
+          <li>
+            <strong>Programming:</strong> Python (Pandas, NumPy, Matplotlib,
+            Scikit-Learn), HTML, CSS (Tailwind)
+          </li>
+          <li>
+            <strong>Data Analysis:</strong> R, Microsoft Office, SQL, MongoDB
+          </li>
+          <li><strong>Data Visualization:</strong> Tableau, Looker</li>
+        </ul>
+      </div>
+
+      <!-- Languages -->
+      <div class="bg-white p-6 rounded-xl shadow-md hover-card mb-6">
+        <h3 class="text-2xl font-semibold mb-4 text-gray-900">🌍 Languages</h3>
+        <ul class="list-disc pl-5 text-gray-700">
+          <li><strong>English:</strong> Intermediate to Advanced</li>
+          <li><strong>Indonesian:</strong> Mother Tongue</li>
+        </ul>
+      </div>
+
+      <!-- Certificate -->
+      <div class="bg-white p-6 rounded-xl shadow-md hover-card">
+        <h3 class="text-2xl font-semibold mb-4 text-gray-900">
+          📜 Certificate
+        </h3>
+        <p class="text-gray-700 font-medium">
+          <strong
+            >Google Advanced Data Analytics Professional Certificate</strong
+          >
+          (April 30, 2024)
+        </p>
+        <p class="text-gray-600">
+          - Applied exploratory data analysis, data cleaning, and data
+          visualization using Python and Tableau.
+        </p>
+        <p class="text-gray-600">
+          -
+          <a
+            href="https://www.coursera.org/verify/7VY5BXXC6HRZ"
+            class="text-blue-500 hover:underline"
+            >Verify Certificate</a
+          >
+        </p>
+      </div>
+    </section>
+    <!-- Footer -->
+    <footer
+      class="w-full py-4 bg-gradient-to-r from-gradient1 via-gradient2 to-gradient3 bg-opacity-80 backdrop-blur-lg text-center text-gray-700 mt-10"
+    >
+      <p>&copy; 2025 Wahyudiyanto | All Rights Reserved</p>
+      <a href="home.html" class="text-blue-500 hover:underline">Back to Home</a>
+    </footer>
+  </body>
+</html>

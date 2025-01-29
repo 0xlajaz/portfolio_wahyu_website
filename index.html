@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wahyudiyanto Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#f3ece6",
+              secondary: "#cbdbe7",
+              accent: "#f8a1a6",
+              gradient1: "#f8e8dc",
+              gradient2: "#bdd4e7",
+              gradient3: "#fbc2eb",
+              gradient4: "#a6c0fe",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      /* Background Gradient */
+      .gradient-bg {
+        background: linear-gradient(
+          135deg,
+          rgba(248, 232, 220, 1) 0%,
+          rgba(189, 212, 231, 1) 40%,
+          rgba(251, 194, 235, 1) 70%,
+          rgba(166, 192, 254, 1) 100%
+        );
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+      }
+
+      /* Noise Overlay */
+      .noise-overlay {
+        background: url("https://www.transparenttextures.com/patterns/asfalt-light.png");
+        opacity: 0.15;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+      }
+
+      /* Smooth hover animation */
+      .hover-gradient {
+        transition: all 0.3s ease-in-out;
+      }
+      .hover-gradient:hover {
+        transform: scale(1.05);
+      }
+    </style>
+    <style>
+      /* Animasi Pop-up */
+      #chatbot-popup {
+        transition: transform 0.3s ease-in-out, opacity 0.3s;
+        transform: translateY(100%);
+        opacity: 0;
+      }
+      #chatbot-popup.visible {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    </style>
+  </head>
+  <body class="relative text-gray-900 min-h-screen">
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+
+    <!-- Background -->
+    <div class="absolute inset-0 gradient-bg"></div>
+    <div class="absolute inset-0 noise-overlay"></div>
+
+    <!-- Header -->
+    <header
+      x-data="{ open: false, lastScroll: 0, visible: true }"
+      x-init="
+        window.addEventListener('scroll', () => {
+          let currentScroll = window.pageYOffset;
+          visible = (currentScroll < lastScroll) || (currentScroll < 50);
+          lastScroll = currentScroll;
+        });
+      "
+      x-bind:class="visible ? 'translate-y-0 opacity-100' : '-translate-y-20 opacity-0'"
+      class="w-full py-4 bg-gradient-to-r from-gradient1 via-gradient2 to-gradient3 bg-opacity-80 backdrop-blur-lg shadow-lg fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out"
+    >
+      <nav class="container mx-auto flex justify-between items-center px-6">
+        <!-- Logo -->
+        <h1 class="text-xl font-bold text-shadow">Who’s This Guy?</h1>
+
+        <!-- Desktop Menu -->
+        <ul class="hidden md:flex gap-6 text-gray-900 font-semibold">
+          <li>
+            <a href="portfolio.html" class="hover:text-gray-600 transition"
+              >Portfolio</a
+            >
+          </li>
+          <li>
+            <a href="resume.html" class="hover:text-gray-600 transition"
+              >Resume</a
+            >
+          </li>
+          <li>
+            <a href="activity.html" class="hover:text-gray-600 transition"
+              >Activity</a
+            >
+          </li>
+          <li>
+            <a href="contact.html" class="hover:text-gray-600 transition"
+              >Contact</a
+            >
+          </li>
+        </ul>
+
+        <!-- Mobile Menu Button -->
+        <button
+          @click="open = !open"
+          class="md:hidden text-gray-900 focus:outline-none z-50 relative"
+        >
+          <svg
+            x-show="!open"
+            class="w-8 h-8"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16m-7 6h7"
+            ></path>
+          </svg>
+        </button>
+      </nav>
+
+      <!-- Mobile Menu (Dynamic Island Effect) -->
+      <div
+        x-show="open"
+        @click.away="open = false"
+        class="fixed top-3 left-1/2 transform -translate-x-1/2 w-[90%] max-w-lg bg-gradient-to-r from-gradient1 via-gradient2 to-gradient3 shadow-lg rounded-full z-50 transition-all duration-300 ease-in-out"
+        x-transition:enter="transform transition ease-out duration-300"
+        x-transition:enter-start="scale-50 opacity-0"
+        x-transition:enter-end="scale-100 opacity-100"
+        x-transition:leave="transform transition ease-in duration-300"
+        x-transition:leave-start="scale-100 opacity-100"
+        x-transition:leave-end="scale-50 opacity-0"
+      >
+        <nav class="px-3 py-2">
+          <ul
+            class="flex flex-row justify-center gap-6 text-gray-900 text-lg font-semibold"
+          >
+            <li>
+              <a
+                href="portfolio.html"
+                @click="open = false"
+                class="hover:text-gray-600 transition"
+                >Portfolio</a
+              >
+            </li>
+            <li>
+              <a
+                href="resume.html"
+                @click="open = false"
+                class="hover:text-gray-600 transition"
+                >Resume</a
+              >
+            </li>
+            <li>
+              <a
+                href="activity.html"
+                @click="open = false"
+                class="hover:text-gray-600 transition"
+                >Activity</a
+              >
+            </li>
+            <li>
+              <a
+                href="contact.html"
+                @click="open = false"
+                class="hover:text-gray-600 transition"
+                >Contact</a
+              >
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <!-- Chatbot Button -->
+    <div class="fixed bottom-6 right-6 z-50">
+      <button
+        id="chatbot-button"
+        class="bg-gradient-to-r from-gradient3 to-gradient4 hover:from-gradient4 hover:to-gradient3 text-white font-semibold py-3 px-6 rounded-full shadow-lg hover-gradient flex items-center gap-2"
+      >
+        <i class="fas fa-comment-dots"></i> Ask Wahyu's AI!
+      </button>
+    </div>
+
+    <!-- Chatbot Popup -->
+    <div
+      id="chatbot-popup"
+      class="fixed bottom-24 right-6 w-96 max-w-full bg-white rounded-lg shadow-lg flex flex-col hidden"
+      style="height: 70vh; z-index: 100"
+    >
+      <!-- Chat Header -->
+      <div
+        class="bg-gradient-to-r from-gradient3 to-gradient4 text-white p-4 rounded-t-lg flex justify-between items-center"
+      >
+        <h3 class="font-semibold">Wade</h3>
+        <button id="close-chatbot" class="text-white hover:text-gray-200">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <!-- Chat Messages -->
+      <div id="chat-messages" class="flex-1 p-4 overflow-y-auto bg-gray-50">
+        <!-- Pesan default -->
+        <div class="text-center text-gray-500">
+          Hi! I'm Wahyu's AI, Wade. Ask me anything about Wahyu!
+        </div>
+      </div>
+
+      <!-- Chat Input -->
+      <div class="p-4 bg-gray-100 rounded-b-lg">
+        <div class="flex gap-2">
+          <input
+            id="chat-input"
+            type="text"
+            class="flex-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-gradient3"
+            placeholder="Type a message..."
+          />
+          <button
+            id="send-message"
+            class="bg-gradient-to-r from-gradient3 to-gradient4 hover:from-gradient4 hover:to-gradient3 text-white font-semibold px-4 rounded-lg"
+          >
+            Send
+          </button>
+        </div>
+        <!-- Rekomendasi Pertanyaan -->
+        <div id="suggestions" class="mt-2 flex flex-wrap gap-2">
+          <button
+            class="suggestion-btn bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-gray-300"
+          >
+            Who is Wahyu?
+          </button>
+          <button
+            class="suggestion-btn bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-gray-300"
+          >
+            What are Wahyu's skills?
+          </button>
+          <button
+            class="suggestion-btn bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-gray-300"
+          >
+            What projects has Wahyu worked on?
+          </button>
+        </div>
+      </div>
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const chatbotButton = document.getElementById("chatbot-button");
+        const chatbotPopup = document.getElementById("chatbot-popup");
+        const closeChatbot = document.getElementById("close-chatbot");
+        const chatInput = document.getElementById("chat-input");
+        const sendMessageButton = document.getElementById("send-message");
+        const chatMessages = document.getElementById("chat-messages");
+        const suggestionButtons = document.querySelectorAll(".suggestion-btn");
+
+        // Toggle chatbot popup
+        chatbotButton.addEventListener("click", () => {
+          chatbotPopup.classList.toggle("visible");
+          chatbotPopup.classList.toggle("hidden");
+        });
+
+        // Close chatbot popup
+        closeChatbot.addEventListener("click", () => {
+          chatbotPopup.classList.remove("visible");
+          chatbotPopup.classList.add("hidden");
+        });
+
+        // Send message
+        sendMessageButton.addEventListener("click", sendMessage);
+        chatInput.addEventListener("keypress", function (event) {
+          if (event.key === "Enter") {
+            sendMessage();
+          }
+        });
+
+        // Suggestion buttons
+        suggestionButtons.forEach((button) => {
+          button.addEventListener("click", function () {
+            chatInput.value = this.innerText;
+            sendMessage();
+          });
+        });
+
+        // Function to send message
+        async function sendMessage() {
+          const message = chatInput.value.trim();
+          if (!message) return;
+
+          // Add user message to chat
+          chatMessages.innerHTML += `
+            <div class="text-right mb-2">
+              <div class="inline-block bg-gradient-to-r from-gradient3 to-gradient4 text-white p-2 rounded-lg">
+                ${message}
+              </div>
+            </div>
+          `;
+          chatInput.value = "";
+
+          // Send message to backend
+          try {
+            const response = await fetch("http://127.0.0.1:5000/chatbot", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ message: message }),
+            });
+
+            const data = await response.json();
+
+            // Add bot response to chat
+            chatMessages.innerHTML += `
+              <div class="text-left mb-2">
+                <div class="inline-block bg-gray-200 text-gray-900 p-2 rounded-lg">
+                  ${data.response}
+                </div>
+              </div>
+            `;
+
+            // Scroll to bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+          } catch (error) {
+            console.error("Error:", error);
+            chatMessages.innerHTML += `
+              <div class="text-left mb-2">
+                <div class="inline-block bg-red-100 text-red-900 p-2 rounded-lg">
+                  Error: Could not connect to the server.
+                </div>
+              </div>
+            `;
+          }
+        }
+      });
+    </script>
+
+    <!-- Hero Section -->
+    <section
+      class="h-screen flex flex-col-reverse md:flex-row items-center justify-center text-center md:text-left px-6 md:px-12 relative"
+    >
+      <!-- Profile Image -->
+      <div class="w-full md:w-1/2 flex justify-center">
+        <div
+          class="relative w-[70%] max-w-xs md:max-w-md rounded-xl shadow-lg overflow-hidden hover-gradient"
+        >
+          <img
+            src="src/assets/profile_picture.jpg"
+            alt="Profile Picture"
+            class="w-full h-auto object-cover"
+          />
+        </div>
+      </div>
+
+      <!-- Text -->
+      <div class="w-full md:w-1/2 mb-8 md:mb-0">
+        <h2 class="text-lg md:text-xl text-gray-700 text-shadow">
+          Hello, It's Me
+        </h2>
+        <h1
+          class="font-extrabold text-gray-900 mt-2 text-shadow"
+          style="font-size: clamp(2rem, 5vw, 4rem)"
+        >
+          Wahyu
+        </h1>
+        <h3 class="text-xl md:text-2xl text-gray-700 mt-2 text-shadow">
+          And I'm a <span class="text-gray-900">Data Analyst</span>
+        </h3>
+
+        <p
+          class="text-gray-800 mt-4 max-w-lg mx-auto md:mx-0 leading-relaxed text-shadow"
+        >
+          You can call me <strong class="text-gray-700">Wade</strong> in
+          English. I’m a final-year student at
+          <a
+            href="https://www.itera.ac.id"
+            class="text-blue-500 hover:underline"
+          >
+            Institut Teknologi Sumatera</a
+          >. I love working with data, exploring patterns, and turning numbers
+          into meaningful insights.
+        </p>
+
+        <p class="text-gray-800 mt-4 max-w-lg mx-auto md:mx-0 text-shadow">
+          But beyond data science, I have a deep passion for the creative world.
+          This website is my first web project, built through self-learning. I
+          enjoy exploring new things, but I also focus deeply on one field,
+          striving to
+          <strong class="text-gray-700">master it and be the best at it</strong
+          >.
+        </p>
+
+        <p class="text-gray-800 mt-4 max-w-lg mx-auto md:mx-0 text-shadow">
+          I'm still learning. And the more I learn, the more I realize
+          <strong class="text-gray-700">how much I don't know</strong>. That’s
+          what keeps me going.
+        </p>
+
+        <!-- Hire Me Button -->
+        <a
+          href="contact.html"
+          class="mt-6 inline-block px-6 py-3 bg-gradient-to-r from-gradient3 to-gradient4 hover:from-gradient4 hover:to-gradient3 rounded-lg text-gray-900 font-semibold transition duration-300 shadow-md hover-gradient"
+        >
+          Let's Connect
+        </a>
+
+        <!-- Social Links -->
+        <div class="mt-4 flex gap-4 justify-center md:justify-start">
+          <p class="text-gray-600 text-shadow">Join Me</p>
+          <a
+            href="https://www.linkedin.com/in/wahyu-laja/"
+            class="text-gray-500 hover:text-gray-900 transition text-shadow"
+          >
+            <i class="fab fa-linkedin"></i> LinkedIn
+          </a>
+          <a
+            href="https://github.com/wahyu-02"
+            class="text-gray-500 hover:text-gray-900 transition text-shadow"
+          >
+            <i class="fab fa-github"></i> GitHub
+          </a>
+          <a
+            href="https://www.instagram.com/wayyulaja"
+            class="text-gray-500 hover:text-gray-900 transition text-shadow"
+          >
+            <i class="fab fa-twitter"></i> Instagram
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer
+      class="w-full py-4 bg-gradient-to-r from-gradient1 via-gradient2 to-gradient3 bg-opacity-80 backdrop-blur-lg text-center text-gray-700 mt-10"
+    >
+      <p>&copy; 2025 Wahyudiyanto | All Rights Reserved</p>
+    </footer>
+  </body>
+</html>
