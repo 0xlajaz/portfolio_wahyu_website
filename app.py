@@ -6,14 +6,14 @@ import os
 import logging
 
 app = Flask(__name__)
-CORS(app, resources={r"/chatbot": {"origins": "https://wahyu-02.github.io/portfolio_wahyu_website"}})
+CORS(app)
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 # API Key Gemini AI
-API_KEY = os.getenv("GEMINI_API_KEY", "AIzaSyDLAWT-IzSUwO3PPvnIHCmW26mB0SN0LKE")
+API_KEY = os.getenv("GEMINI_API_KEY")
 
 # Inisialisasi Gemini API Client
 genai.configure(api_key=API_KEY)
