@@ -110,6 +110,11 @@ def ask_gemini(question):
         lang = detect_language(question)
         info = PERSONAL_INFO_EN if lang == "en" else PERSONAL_INFO_ID
 
+        # Handle greetings
+        greetings = ["hi", "hello", "hey", "hola", "hai", "halo"]
+        if question.lower().strip() in greetings:
+            return "Hello! How can I assist you today?" if lang == "en" else "Halo! Ada yang bisa saya bantu?"
+
         prompt = f"""
         You are Wade, Wahyu's personal chatbot. Your answers should be based on the following information:
 
