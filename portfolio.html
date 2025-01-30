@@ -72,18 +72,29 @@
     <header
       x-data="{ open: false, lastScroll: 0, visible: true }"
       x-init="
-        window.addEventListener('scroll', () => {
-          let currentScroll = window.pageYOffset;
-          visible = (currentScroll < lastScroll) || (currentScroll < 50);
-          lastScroll = currentScroll;
-        });
-      "
+    window.addEventListener('scroll', () => {
+      let currentScroll = window.pageYOffset;
+      visible = (currentScroll < lastScroll) || (currentScroll < 50);
+      lastScroll = currentScroll;
+    });
+  "
       x-bind:class="visible ? 'translate-y-0 opacity-100' : '-translate-y-20 opacity-0'"
       class="w-full py-4 bg-gradient-to-r from-gradient1 via-gradient2 to-gradient3 bg-opacity-80 backdrop-blur-lg shadow-lg fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out"
     >
       <nav class="container mx-auto flex justify-between items-center px-6">
-        <!-- Logo -->
-        <h1 class="text-xl font-bold text-shadow">See What I Built</h1>
+        <!-- Logo & Title Wrapper -->
+        <div class="flex items-center gap-3">
+          <a href="index.html">
+            <img
+              src="LOGOW.png"
+              alt="Logo"
+              class="h-10 md:h-12 lg:h-14 w-auto"
+            />
+          </a>
+          <h1 class="text-xl font-bold text-shadow text-left">
+            See What I Built
+          </h1>
+        </div>
 
         <!-- Desktop Menu -->
         <ul class="hidden md:flex gap-6 text-gray-900 font-semibold">
