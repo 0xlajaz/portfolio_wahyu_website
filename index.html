@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Wahyudiyanto Page</title>
-    <link rel="icon" type="image/png" href="LOGOW.png">
+    <link rel="icon" type="image/png" href="LOGOW.png" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -111,9 +111,7 @@
         <!-- Desktop Menu -->
         <ul class="hidden md:flex gap-6 text-gray-900 font-semibold">
           <li>
-            <a href="index.html" class="hover:text-gray-600 transition"
-              >Home</a
-            >
+            <a href="index.html" class="hover:text-gray-600 transition">Home</a>
           </li>
           <li>
             <a href="portfolio.html" class="hover:text-gray-600 transition"
@@ -225,181 +223,182 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
     />
-  <!-- Chatbot Button -->
-  <div class="fixed bottom-6 right-6 z-50">
-    <button
-      id="chatbot-button"
-      class="bg-gradient-to-r from-gradient3 to-gradient4 hover:from-gradient4 hover:to-gradient3 text-gray-900 font-semibold py-3 px-6 rounded-full shadow-lg hover-gradient flex items-center gap-2"
-    >
-      <i class="fas fa-comment-dots"></i> Ask Wahyu's AI!
-    </button>
-  </div>
 
-  <!-- Chatbot Popup -->
-  <div
-    id="chatbot-popup"
-    class="fixed bottom-24 right-6 w-96 max-w-full bg-white rounded-lg shadow-lg flex flex-col hidden"
-    style="height: 70vh; z-index: 100"
-  >
-    <!-- Chat Header -->
-    <div
-      class="bg-gradient-to-r from-gradient3 to-gradient4 text-white p-4 rounded-t-lg flex justify-between items-center"
-    >
-      <h3 class="font-semibold">Wade</h3>
-      <button id="close-chatbot" class="text-white hover:text-gray-200">
-        <i class="fas fa-times"></i>
+    <!-- Chatbot Button -->
+    <div class="fixed bottom-6 right-6 z-50">
+      <button
+        id="chatbot-button"
+        class="bg-gradient-to-r from-gradient3 to-gradient4 hover:from-gradient4 hover:to-gradient3 text-gray-900 font-semibold py-3 px-6 rounded-full shadow-lg hover-gradient flex items-center gap-2"
+      >
+        <i class="fas fa-comment-dots"></i> Ask Wahyu's AI!
       </button>
     </div>
 
-    <!-- Chat Messages -->
-    <div id="chat-messages" class="flex-1 p-4 overflow-y-auto bg-gray-50">
-      <!-- Default message -->
-      <div class="text-center text-gray-500">
-        Hi! I'm Wahyu's AI, Wade. Ask me anything about Wahyu!
+    <!-- Chatbot Popup -->
+    <div
+      id="chatbot-popup"
+      class="fixed bottom-24 right-6 w-96 max-w-full bg-white rounded-lg shadow-lg flex flex-col hidden"
+      style="height: 70vh; z-index: 100"
+    >
+      <!-- Chat Header -->
+      <div
+        class="bg-gradient-to-r from-gradient3 to-gradient4 text-white p-4 rounded-t-lg flex justify-between items-center"
+      >
+        <h3 class="font-semibold">Wade</h3>
+        <button id="close-chatbot" class="text-white hover:text-gray-200">
+          <i class="fas fa-times"></i>
+        </button>
       </div>
-      <!-- Loading indicator -->
-      <div id="loading" class="text-center hidden">
-        <i class="fas fa-spinner fa-spin"></i> Connecting to server...
+
+      <!-- Chat Messages -->
+      <div id="chat-messages" class="flex-1 p-4 overflow-y-auto bg-gray-50">
+        <!-- Pesan default -->
+        <div class="text-center text-gray-500">
+          Hi! I'm Wade, Wahyu's personal AI. You can ask me anything about Him,
+          or ask me a general question and I'll try to answer it!
+        </div>
+        <!-- Loading indicator -->
+        <div id="loading" class="text-center hidden">
+          <i class="fas fa-spinner fa-spin"></i> Connecting to server...
+        </div>
+      </div>
+
+      <!-- Chat Input -->
+      <div class="p-4 bg-gray-100 rounded-b-lg">
+        <div class="flex gap-2">
+          <input
+            id="chat-input"
+            type="text"
+            class="flex-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-gradient3"
+            placeholder="Type a message..."
+          />
+          <button
+            id="send-message"
+            class="bg-gradient-to-r from-gradient3 to-gradient4 hover:from-gradient4 hover:to-gradient3 text-white font-semibold px-4 rounded-lg"
+          >
+            Send
+          </button>
+        </div>
+        <!-- Rekomendasi Pertanyaan -->
+        <div id="suggestions" class="mt-2 flex flex-wrap gap-2">
+          <button
+            class="suggestion-btn bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-gray-300"
+          >
+            Who is Wahyu?
+          </button>
+          <button
+            class="suggestion-btn bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-gray-300"
+          >
+            What are Wahyu's skills?
+          </button>
+          <button
+            class="suggestion-btn bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-gray-300"
+          >
+            What projects has Wahyu worked on?
+          </button>
+        </div>
       </div>
     </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const chatbotButton = document.getElementById("chatbot-button");
+        const chatbotPopup = document.getElementById("chatbot-popup");
+        const closeChatbot = document.getElementById("close-chatbot");
+        const chatInput = document.getElementById("chat-input");
+        const sendMessageButton = document.getElementById("send-message");
+        const chatMessages = document.getElementById("chat-messages");
+        const suggestionButtons = document.querySelectorAll(".suggestion-btn");
+        const loadingElement = document.getElementById("loading");
 
-    <!-- Chat Input -->
-    <div class="p-4 bg-gray-100 rounded-b-lg">
-      <div class="flex gap-2">
-        <input
-          id="chat-input"
-          type="text"
-          class="flex-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-gradient3"
-          placeholder="Type a message..."
-        />
-        <button
-          id="send-message"
-          class="bg-gradient-to-r from-gradient3 to-gradient4 hover:from-gradient4 hover:to-gradient3 text-white font-semibold px-4 rounded-lg"
-        >
-          Send
-        </button>
-      </div>
-      <!-- Suggested Questions -->
-      <div id="suggestions" class="mt-2 flex flex-wrap gap-2">
-        <button
-          class="suggestion-btn bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-gray-300"
-        >
-          Who is Wahyu?
-        </button>
-        <button
-          class="suggestion-btn bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-gray-300"
-        >
-          What are Wahyu's skills?
-        </button>
-        <button
-          class="suggestion-btn bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-gray-300"
-        >
-          What projects has Wahyu worked on?
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const chatbotButton = document.getElementById("chatbot-button");
-      const chatbotPopup = document.getElementById("chatbot-popup");
-      const closeChatbot = document.getElementById("close-chatbot");
-      const chatInput = document.getElementById("chat-input");
-      const sendMessageButton = document.getElementById("send-message");
-      const chatMessages = document.getElementById("chat-messages");
-      const suggestionButtons = document.querySelectorAll(".suggestion-btn");
-      const loadingElement = document.getElementById("loading");
-
-      // Toggle chatbot popup
-      chatbotButton.addEventListener("click", () => {
-        chatbotPopup.classList.toggle("visible");
-        chatbotPopup.classList.toggle("hidden");
-      });
-
-      // Close chatbot popup
-      closeChatbot.addEventListener("click", () => {
-        chatbotPopup.classList.remove("visible");
-        chatbotPopup.classList.add("hidden");
-      });
-
-      // Send message
-      sendMessageButton.addEventListener("click", sendMessage);
-      chatInput.addEventListener("keypress", function (event) {
-        if (event.key === "Enter") {
-          sendMessage();
-        }
-      });
-
-      // Suggestion buttons
-      suggestionButtons.forEach((button) => {
-        button.addEventListener("click", function () {
-          chatInput.value = this.innerText;
-          sendMessage();
+        // Toggle chatbot popup
+        chatbotButton.addEventListener("click", () => {
+          chatbotPopup.classList.toggle("visible");
+          chatbotPopup.classList.toggle("hidden");
         });
-      });
 
-      // Function to send message
-      async function sendMessage() {
-        const message = chatInput.value.trim();
-        if (!message) return;
+        // Close chatbot popup
+        closeChatbot.addEventListener("click", () => {
+          chatbotPopup.classList.remove("visible");
+          chatbotPopup.classList.add("hidden");
+        });
 
-        // Add user message to chat
-        chatMessages.innerHTML += `
-          <div class="text-right mb-2">
-            <div class="inline-block bg-gradient-to-r from-gradient3 to-gradient4 text-white p-2 rounded-lg">
-              ${message}
-            </div>
+        // Send message
+        sendMessageButton.addEventListener("click", sendMessage);
+        chatInput.addEventListener("keypress", function (event) {
+          if (event.key === "Enter") {
+            sendMessage();
+          }
+        });
+
+        // Suggestion buttons
+        suggestionButtons.forEach((button) => {
+          button.addEventListener("click", function () {
+            chatInput.value = this.innerText;
+            sendMessage();
+          });
+        });
+
+        // Function to send message
+        const API_URL = "https://portfolio-wahyu-website.onrender.com/chatbot";
+        async function sendMessage() {
+          const message = chatInput.value.trim();
+          if (!message) return;
+
+          // Add user message to chat
+          chatMessages.innerHTML += `
+        <div class="text-right mb-2">
+          <div class="inline-block bg-gradient-to-r from-gradient3 to-gradient4 text-white p-2 rounded-lg">
+            ${message}
           </div>
-        `;
-        chatInput.value = "";
+        </div>
+      `;
+          chatInput.value = "";
 
-        // Show loading indicator
-        loadingElement.classList.remove("hidden");
+          // Show loading indicator
+          loadingElement.classList.remove("hidden");
 
-        // Send message to backend
-        try {
-          const response = await fetch(
-            "https://portfolio-wahyu-website.onrender.com",
-            {
+          // Send message to backend
+          try {
+            const response = await fetch(API_URL, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ message: message }),
+            });
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
             }
-          );
 
-          const data = await response.json();
+            const data = await response.json();
 
-          // Hide loading indicator
-          loadingElement.classList.add("hidden");
+            // Hide loading indicator
+            loadingElement.classList.add("hidden");
 
-          // Add bot response to chat
-          chatMessages.innerHTML += `
-            <div class="text-left mb-2">
-              <div class="inline-block bg-gray-200 text-gray-900 p-2 rounded-lg">
-                ${data.response}
-              </div>
+            // Add bot response to chat
+            chatMessages.innerHTML += `
+          <div class="text-left mb-2">
+            <div class="inline-block bg-gray-200 text-gray-900 p-2 rounded-lg">
+              ${data.response}
             </div>
-          `;
+          </div>
+        `;
+            // Scroll to bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+          } catch (error) {
+            console.error("Error:", error);
+            // Hide loading indicator
+            loadingElement.classList.add("hidden");
 
-          // Scroll to bottom
-          chatMessages.scrollTop = chatMessages.scrollHeight;
-        } catch (error) {
-          console.error("Error:", error);
-          // Hide loading indicator
-          loadingElement.classList.add("hidden");
-
-          chatMessages.innerHTML += `
-            <div class="text-left mb-2">
-              <div class="inline-block bg-red-100 text-red-900 p-2 rounded-lg">
-                Error: Could not connect to the server.
-              </div>
+            chatMessages.innerHTML += `
+          <div class="text-left mb-2">
+            <div class="inline-block bg-red-100 text-red-900 p-2 rounded-lg">
+              Error: Could not connect to the server. Please try again later.
             </div>
-          `;
+          </div>
+        `;
+          }
         }
-      }
-    });
-  </script>
+      });
+    </script>
 
     <!-- Hero Section -->
     <section
@@ -417,7 +416,6 @@
           />
         </div>
       </div>
-
 
       <!-- Text -->
       <div class="w-full md:w-1/2 mt-8 md:mt-0">
@@ -503,3 +501,4 @@
     </footer>
   </body>
 </html>
+
